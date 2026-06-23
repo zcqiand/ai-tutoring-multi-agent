@@ -1,6 +1,6 @@
 """AI 学习辅导多智能体系统。
 
-《Harness 工程》卷四案例。三代理协作：
+《Harness 工程：围绕 Claude Code 构建可靠系统》卷四案例。三代理协作：
     planner（规划学习路径）
       → tutor（按路径分步讲解）
       → evaluator（评估学习效果）

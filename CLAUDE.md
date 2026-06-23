@@ -1,6 +1,6 @@
 # ai-tutoring-multi-agent — Claude Code 项目级上下文
 
-> 本文件是《Harness 工程》第 17 章「多代理架构」配套项目的项目级上下文。
+> 本文件是《Harness 工程：围绕 Claude Code 构建可靠系统》第 17 章「多代理架构」配套项目的项目级上下文。
 
 ## 项目定位
 
