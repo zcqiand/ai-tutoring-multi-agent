@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-tutoring-multi-agent"
+version = "0.1.0"
+description = "《Harness 工程》卷四案例：AI 学习辅导多智能体系统"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "南荣相如", email = "1282301776@qq.com" }
+]
+requires-python = ">=3.10"
+keywords = ["claude", "agent-sdk", "multi-agent", "tutoring", "education"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    # Anthropic SDK 直接调用 Messages API。
+    # 不强绑 claude-agent-sdk（它仍在快速迭代），用稳定的 anthropic SDK
+    # 让本项目的三代理协作逻辑与 SDK 版本解耦。
+    "anthropic>=0.40.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+]
+
+[project.scripts]
+ai-tutor-demo = "ai_tutoring.run_demo:main"
+
+[project.urls]
+Homepage = "https://github.com/zcqiand/ai-tutoring-multi-agent"
+Issues = "https://github.com/zcqiand/ai-tutoring-multi-agent/issues"
+Book = "https://github.com/zcqiand/claudecode-harness-book"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_tutoring"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
