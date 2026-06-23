@@ -1,0 +1,38 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build
+dist/
+build/
+
+# Env
+.env
+.env.local
+!.env.example
+
+# Local
+*.log
+*.tmp
+
+# Token logs（本地调试，不入仓）
+token-usage/
