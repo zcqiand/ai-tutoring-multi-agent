@@ -1,35 +1,55 @@
-# ai-tutoring-multi-agent
+# AI 学习辅导多智能体系统
 
-《Harness 工程：围绕 Claude Code 构建可靠系统》一书**卷四**的可部署案例项目——AI 学习辅导多智能体系统。
+> 三代理协作的命令行学习辅导系统——**《Harness 工程：围绕 Claude Code 构建可靠系统》卷四**的可部署配套案例。
 
-本仓库是书中讲解多代理架构、代理间通信、团队知识管理、生产级配置等概念的实物载体。
+一款基于 Claude Agent SDK 的 AI 学习辅导多智能体系统：planner 制定学习路径、tutor 分步讲解、evaluator 评估效果。书中讲的每一个核心概念（多代理架构、代理间通信、团队知识管理、Token 经济学、成本控制……），在本仓库里都有对应的、可运行的最小实现，而不是停在截图或伪代码。
+
+## 项目背景
+
+为什么用「AI 学习辅导」来配书？多代理系统的复杂度刚好够用：
+
+- **小而可跑**：零部署依赖，`pip install -e .` 后填入 API Key 即可跑，读者一次能读完整个仓库；
+- **要素齐全**：多代理协作（planner / tutor / evaluator）、代理间通信（shared_memory）、知识管理（knowledge_base）、Token 经济学（cost_tracker）、预算控制一应俱全；
+- **贴近实战**：每个人都能想象一个「AI 家教」的需求，业务逻辑简单，读者可以专注工程实现。
+
+## 功能特性
+
+### 业务功能
+
+- planner 根据用户问题制定学习路径（分步大纲）
+- tutor 按路径分步讲解，支持多轮追问
+- evaluator 评估学习效果，给出改进建议
+- shared_memory 在三代理间传递上下文，追踪完整学习轨迹
+- cost_tracker 实时追踪 Token 消耗，支持预算硬上限
+
+### 工程特性（教学要点）
+
+- 三代理职责单一：planner 不讲课，tutor 不评估，evaluator 不规划
+- 上下文显式传递：代理间通过 `SharedMemory` 实例传递，禁止全局变量
+- 每次 API 调用必须过 cost_tracker，禁止裸调用
+- 模型降级：复杂规划用 sonnet-4-6，简单讲解可降级到 haiku-4-5
+- 零伪代码：禁止 `pass` / `TODO` / `...` 占位
 
 ## 章节映射
 
 | 章节 | 对应代码 |
 |------|---------|
 | 第 17 章 多代理架构 | `.claude/agents/{planner,tutor,evaluator}.md` |
-| 第 18 章 代理间通信 | `src/ai_tutoring/orchestrator.py` + `shared_memory.py` |
+| 第 18 章 代理间通信 | `orchestrator.py` + `shared_memory.py` |
 | 第 19 章 团队知识管理 | `knowledge_base/` |
-| 第 20 章 生产级配置 | `src/ai_tutoring/cost_tracker.py` + `.claude/settings.json` |
-
-## 技术栈
-
-- Python 3.10+
-- Claude Agent SDK（Python 版）
-- 三代理协作：planner（规划）→ tutor（辅导）→ evaluator（评估）
+| 第 20 章 生产级配置 | `cost_tracker.py` + `.claude/settings.json` |
 
 ## 快速开始
 
 ```bash
-# 1. 安装
+# 安装（需要 Python 3.10+）
 pip install -e .
 
-# 2. 配置 API Key
+# 配置 API Key
 cp .env.example .env
 # 编辑 .env，填入 ANTHROPIC_API_KEY
 
-# 3. 运行 demo
+# 运行
 python run_demo.py "请教我导数"
 ```
 
@@ -58,7 +78,7 @@ Token 消耗：
 │  orchestrator    │  调度主循环（第 18 章）
 └─────────┬────────┘
           │
-   ┌──────┼──────┬─────────┐
+   ┌──────┼──────┐─────────┐
    ▼      ▼      ▼         ▼
 ┌────────┐┌────────┐┌────────────┐
 │planner ││ tutor  ││ evaluator  │
@@ -67,7 +87,7 @@ Token 消耗：
      └───────┼───────────┘
              ▼
       ┌──────────────┐
-      │ shared_memory │
+      │shared_memory │  ← 代理间上下文共享
       └──────┬────────┘
              ▼
       ┌──────────────┐
@@ -80,4 +100,4 @@ Token 消耗：
 - **书名**：Harness 工程：围绕 Claude Code 构建可靠系统
 - **作者**：南荣相如
 - **代码片段索引**：[claudecode-harness-book](https://github.com/zcqiand/claudecode-harness-book)
-- **Issues**：https://github.com/zcqiand/ai-tutoring-multi-agent/issues
+- **Issues**：[https://github.com/zcqiand/ai-tutoring-multi-agent/issues](https://github.com/zcqiand/ai-tutoring-multi-agent/issues)
