@@ -1,0 +1,85 @@
+{
+  "knowledge_points": [
+    {
+      "id": "deriv-def",
+      "name": "导数定义",
+      "difficulty": 1,
+      "prerequisites": [],
+      "common_errors": [
+        "混淆导数与微分定义",
+        "极限表达式写错"
+      ]
+    },
+    {
+      "id": "deriv-geo",
+      "name": "导数几何意义",
+      "difficulty": 1,
+      "prerequisites": ["deriv-def"],
+      "common_errors": [
+        "切线斜率与函数值混淆",
+        "点斜式公式记错"
+      ]
+    },
+    {
+      "id": "deriv-rules",
+      "name": "求导法则",
+      "difficulty": 2,
+      "prerequisites": ["deriv-def"],
+      "common_errors": [
+        "链式法则漏乘内层导数",
+        "积法则符号搞反",
+        "商法则分子分母颠倒"
+      ]
+    },
+    {
+      "id": "deriv-chain",
+      "name": "链式法则",
+      "difficulty": 2,
+      "prerequisites": ["deriv-rules"],
+      "common_errors": [
+        "复合函数分解错误",
+        "漏乘内层导数"
+      ]
+    },
+    {
+      "id": "int-def",
+      "name": "积分定义",
+      "difficulty": 2,
+      "prerequisites": ["deriv-def"],
+      "common_errors": [
+        "不定积分忘记常数C",
+        "定积分上下限搞反"
+      ]
+    },
+    {
+      "id": "int-rules",
+      "name": "基本积分公式",
+      "difficulty": 2,
+      "prerequisites": ["int-def", "deriv-rules"],
+      "common_errors": [
+        "幂函数积分指数加1后忘记除以新指数",
+        "三角函数积分符号搞错"
+      ]
+    },
+    {
+      "id": "int-sub",
+      "name": "换元积分法",
+      "difficulty": 3,
+      "prerequisites": ["int-rules", "deriv-chain"],
+      "common_errors": [
+        "换元后忘记回代",
+        "微分关系写反"
+      ]
+    },
+    {
+      "id": "newton-leibniz",
+      "name": "牛顿-莱布尼茨公式",
+      "difficulty": 3,
+      "prerequisites": ["int-def", "int-rules"],
+      "common_errors": [
+        "原函数求错",
+        "上下限代入顺序搞反"
+      ]
+    }
+  ]
+}
