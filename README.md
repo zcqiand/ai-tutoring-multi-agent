@@ -134,7 +134,7 @@ Token 消耗：
 
   - 多代理架构设计 / 知识库与学科建模 / 出题与批改智能体 / 自适应学习引擎 / 苏格拉底式辅导 / 学情报告
   - 代码片段索引：[claude-code-book](https://github.com/zcqiand/claude-code-book)
-  - 电子书籍网址：[亚马逊](https://www.amazon.com/dp/B0H3M3B8GG)
+  - 电子书籍网址：[亚马逊](https://www.amazon.com/dp/B0H3781RB9)
 
 - **《Harness 工程：围绕 Claude Code 构建可靠系统》**（卷四·多代理架构，第 17-20 章）— 南荣相如
 
