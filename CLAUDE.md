@@ -1,80 +1,69 @@
-# ai-tutoring-multi-agent — Claude Code 项目级上下文
+# AI 学习辅导多智能体系统 — 仓库工作约定（供 Claude Code）
 
-> 本文件是《Harness 工程：围绕 Claude Code 构建可靠系统》第 17 章「多代理架构」配套项目的项目级上下文。
+本仓为《Codex 从入门到项目实践》卷五案例仓（AI 学习辅导多智能体）的可运行配套工程，是书稿代码块的 **source of truth**。
 
 ## 项目定位
 
-AI 学习辅导系统，演示 Claude Agent SDK 下三代理协作模式：
+三代理（planner / tutor / evaluator）协作的 AI 学习辅导系统，演示多代理架构、代理间通信、团队知识管理、Token 经济学与成本控制。
 
-- **planner**：根据用户问题制定学习路径
-- **tutor**：按路径分步讲解
-- **evaluator**：评估学习效果并给出改进建议
+## 铁律
 
-用于讲解多代理架构、代理间通信、团队知识管理、Token 经济学与成本控制。
+- **TDD**：每个模块先写失败测试 → 跑确认失败 → 实现 → 跑确认绿 → commit。
+- **版本钉死**：依赖与 `version-lock.json` 的 `version_lock` 一致；不引入 lock 外的库。
+- **tag 即放行**：全量回归绿后打 `v<MAJOR>.<MINOR>-<NNN>`（NNN=项目号）。
+- **只增不改**：扩充时不动现有模块签名/行为；新模块独立测试，CI 双跑。
+- **mock-friendly**：`pip install -e . && pytest -q` 必须在无 Key、无 Docker、无网下全绿。
 
-## 技术栈
+## 技术栈与版本（钉死于 version-lock.json）
 
-| 类别 | 选型 | 版本 |
-|------|------|------|
-| 语言 | Python | 3.10+ |
-| AI SDK | Claude Agent SDK | 最新稳定版 |
-| 模型 | claude-sonnet-4-6 / claude-haiku-4-5 | 与书籍 version-lock 一致 |
-| 测试 | pytest | 8.x |
+- Python 3.10+
+- Claude Agent SDK（最新稳定版）
+- pytest 8.x
+
+## 验收
+
+```bash
+pip install -e .       # 离线可用（首次需联网，之后 node_modules 已就绪）
+pytest -q              # 必须全绿，无需 Key/Docker/网络
+```
 
 ## 目录结构
 
 ```
 ai-tutoring-multi-agent/
 ├── pyproject.toml
-├── .env.example                    ← ANTHROPIC_API_KEY 模板
-├── CLAUDE.md                        ← 本文件
+├── .env.example
+├── CLAUDE.md
 ├── .claude/
 │   ├── settings.json
-│   └── agents/                      ← 三代理定义（第 17 章实物）
+│   └── agents/                  ← 三代理定义
 │       ├── planner.md
 │       ├── tutor.md
 │       └── evaluator.md
 ├── src/ai_tutoring/
 │   ├── __init__.py
-│   ├── orchestrator.py              ← 主调度（第 18 章）
+│   ├── orchestrator.py          ← 主调度
 │   ├── planner_agent.py
 │   ├── tutor_agent.py
 │   ├── evaluator_agent.py
-│   ├── shared_memory.py             ← 代理间上下文共享（第 18 章）
-│   └── cost_tracker.py              ← Token 经济学（第 20 章）
-├── knowledge_base/                  ← 知识库样例（第 19 章）
+│   ├── shared_memory.py         ← 代理间上下文共享
+│   ├── cost_tracker.py          ← Token 经济学
+│   ├── question_maker.py
+│   ├── grader.py
+│   ├── student_tracker.py
+│   ├── recommend_kp.py
+│   └── socratic_tutor.py
+├── knowledge_base/              ← 知识库样例
 │   ├── math/derivatives.md
 │   ├── math/integrals.md
 │   └── physics/mechanics.md
-├── run_demo.py                      ← 一条命令跑完三代理协作
+├── run_demo.py
 └── tests/
 ```
 
 ## 编码约定
 
-- **代理职责单一**：planner 不讲课，tutor 不评估，evaluator 不规划。违反者重构。
+- **代理职责单一**：planner 不讲课，tutor 不评估，evaluator 不规划。
 - **上下文显式传递**：代理间通过 `shared_memory.SharedMemory` 实例传递，禁止用全局变量。
-- **每次 API 调用必须计入 cost_tracker**：禁止裸调用 `client.messages.create()`，必须经过包装。
-- **模型选型**：复杂规划与评估用 sonnet-4-6，简单讲解可降级到 haiku-4-5（写入 cost_tracker 备注）。
-- **零伪代码**：禁止 `pass` 占位、`TODO`、`...`。
-
-## 危险操作
-
-- 修改 `.env`（涉及 API Key）
-- 删除 `knowledge_base/` 下任何文件
-- 在 `cost_tracker.py` 内绕过预算检查
-
-## 预算控制
-
-- 单次 demo 默认硬上限：$0.50
-- 超出时 orchestrator 必须中止并报告
-- 实现见 `src/ai_tutoring/cost_tracker.py`
-
-## 与本书的关系
-
-| 章节 | 本仓库对应 |
-|------|----------|
-| 第 17 章 多代理架构 | `.claude/agents/{planner,tutor,evaluator}.md` |
-| 第 18 章 代理间通信 | `orchestrator.py` + `shared_memory.py` |
-| 第 19 章 团队知识管理 | `knowledge_base/` |
-| 第 20 章 生产级配置 | `cost_tracker.py` + `.claude/settings.json` |
+- **API 调用必须经 cost_tracker**：禁止裸调用 `client.messages.create()`，必须经过包装。
+- **模型选型**：复杂规划与评估用 sonnet-4-6，简单讲解可降级到 haiku-4-5。
