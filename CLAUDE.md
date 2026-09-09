@@ -1,6 +1,6 @@
 # AI 学习辅导多智能体系统 — 仓库工作约定（供 Claude Code）
 
-本仓为《Codex 从入门到项目实践》卷五案例仓（AI 学习辅导多智能体）的可运行配套工程，是书稿代码块的 **source of truth**。
+本仓为可运行配套工程，是书稿代码块的 **source of truth**。
 
 ## 项目定位
 
@@ -10,7 +10,6 @@
 
 - **TDD**：每个模块先写失败测试 → 跑确认失败 → 实现 → 跑确认绿 → commit。
 - **版本钉死**：依赖与 `version-lock.json` 的 `version_lock` 一致；不引入 lock 外的库。
-- **tag 即放行**：全量回归绿后打 `v<MAJOR>.<MINOR>-<NNN>`（NNN=项目号）。
 - **只增不改**：扩充时不动现有模块签名/行为；新模块独立测试，CI 双跑。
 - **mock-friendly**：`pip install -e . && pytest -q` 必须在无 Key、无 Docker、无网下全绿。
 
@@ -67,3 +66,33 @@ ai-tutoring-multi-agent/
 - **上下文显式传递**：代理间通过 `shared_memory.SharedMemory` 实例传递，禁止用全局变量。
 - **API 调用必须经 cost_tracker**：禁止裸调用 `client.messages.create()`，必须经过包装。
 - **模型选型**：复杂规划与评估用 sonnet-4-6，简单讲解可降级到 haiku-4-5。
+
+## Tag 规约
+
+| 字段 | 值 |
+|---|---|
+| 格式 | `v<MAJOR>.<MINOR>.<PATCH>-<YYYYMMDD>` |
+| 用途 | 公开里程碑（sprint 收尾 / 部署上线 / 版本基线） |
+| 能否删 / 覆盖 | **禁止** |
+
+样例：
+
+- `v0.7.0-20260821` —— saas-nextjs backend 塌缩后的 0.7.0 release
+- `v0.1.2-20260821` —— suite 根仓的 release（这次 form A → B + tag / submodule 规约更新）
+
+> `<YYYYMMDD>` 是 tag 创建日（commit author date 也可，但要同一仓一致）。
+> 不放 commit 数 —— `git describe` 会自动加 `-<N>-g<sha>` 后缀。
+>
+> **历史遗留**：2026-08-21 之前打过一批 `v<MAJOR>.<MINOR>-<NNN>` iteration tag（如
+> `v1.0-001` / `v1.0-009` / `v1.1-001`）。它们早于本规约存在，**重命名 tag**，但**tag 一律用 Release 格式**。
+
+```bash
+# 正确
+git push origin v0.7.0-20260821
+
+# 错误：可能误推未准备好的 tag
+git push --tags
+```
+
+`--tags` 把本地**全部** tag 推上去。Release tag 应该显式 `push origin <tag>`，让
+reviewer 在推送前显式选择。
