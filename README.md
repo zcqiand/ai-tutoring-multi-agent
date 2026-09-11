@@ -1,6 +1,6 @@
 # AI 学习辅导多智能体系统
 
-三代理协作（planner / tutor / evaluator）的命令行学习辅导系统，配套《Codex 从入门到项目实践》卷五。
+三代理协作（planner / tutor / evaluator）的命令行学习辅导系统，配套《Harness 工程：围绕 Claude Code 构建可靠系统》。
 
 ## 快速开始
 
@@ -29,6 +29,8 @@ pytest -q                 # 全量测试（FakeLLM，无需 API Key）
 | 测试框架 | pytest 8.x |
 
 ## 配套书籍及章节映射
+
+### 书一《Harness 工程：围绕 Claude Code 构建可靠系统》
 
 | 章 | 主题 | 对应源文件 |
 | :--- | :--- | :--- |

@@ -34,7 +34,7 @@ question_maker
 
 ## 章节映射
 
-本模块是《Codex 从入门到项目实践》卷五（第 37 章）和《Harness 工程》第 17-20 章的配套实现。
+本模块是《Harness 工程：围绕 Claude Code 构建可靠系统》（卷四·多代理架构，第 17-20 章）的配套实现。
 
 | 章节 | 对应代码 |
 |------|---------|
@@ -47,10 +47,6 @@ question_maker
 | 第 41 章 集成测试、部署与项目回顾 | 全项目集成 + `tests/` |
 
 ## 配套书籍
-
-- **《Codex 从入门到项目实践》**（卷五，第 35-41 章）— 南荣相如
-  - 代码片段索引：[claude-code-book](https://github.com/zcqiand/claude-code-book)
-  - 电子书籍网址：[亚马逊](https://www.amazon.com/dp/B0H3M3B8GG)
 
 - **《Harness 工程：围绕 Claude Code 构建可靠系统》**（卷四，第 17-20 章）— 南荣相如
   - 代码片段索引：[claudecode-harness-book](https://github.com/zcqiand/claudecode-harness-book)
