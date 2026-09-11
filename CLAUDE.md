@@ -83,13 +83,12 @@ ai-tutoring-multi-agent/
 > `<YYYYMMDD>` 是 tag 创建日（commit author date 也可，但要同一仓一致）。
 > 不放 commit 数 —— `git describe` 会自动加 `-<N>-g<sha>` 后缀。
 >
-> **历史遗留**：tag（legacy，原样保留）——
+> **历史遗留**：tag（legacy，已按 Release 格式重命名）——
 >
-> - `v1.0-003` → `12af366`
-> - `v1.0-Harness-工程：围绕-Claude-Code-构建可靠系统` → `12af366`
+> - `v1.0-003` → `v0.0.1-20260627`（`12af366`）
+> - `v1.0-Harness-工程：围绕-Claude-Code-构建可靠系统` → `v0.0.2-20260629`（`12af366`）
 >
-> 它们早于本规约存在，**原样保留不删不改**（release-format alias 见 `v0.1.0-20260627`，指向同一 commit），
-> 但**新 tag 一律用 Release 格式**。
+> 旧名已删，仅 Release 格式名生效；**新 tag 一律用 Release 格式**。
 
 ```bash
 # 正确
