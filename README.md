@@ -7,7 +7,7 @@
 ```bash
 pip install -e .          # 安装依赖（Python 3.10+）
 cp .env.example .env      # 填入 ANTHROPIC_API_KEY
-python run_demo.py "请教我导数"
+ai-tutor-demo "请教我导数"
 pytest -q                 # 全量测试（FakeLLM，无需 API Key）
 ```
 
@@ -32,15 +32,18 @@ pytest -q                 # 全量测试（FakeLLM，无需 API Key）
 
 ### 书一《Harness 工程：围绕 Claude Code 构建可靠系统》
 
+配套版本：`v0.1.1-20260909`（本书全部引用源文件以此 tag 为准；其后提交仅为文档修订，代码未变）
+
+案例以「案例对照」小节嵌入第 17—20 章机制讲解，对应源文件如下（均在配套 tag 下真实存在）：
+
 | 章 | 主题 | 对应源文件 |
 | :--- | :--- | :--- |
-| 35 | 多智能体架构设计 | `.claude/agents/{planner,tutor,evaluator}.md` + `orchestrator.py` |
-| 36 | 知识库与学科建模 | `knowledge_base/` |
-| 37 | 出题智能体与批改智能体 | `src/ai_tutoring/{question_maker,grader}.py` |
-| 38 | 学习路径规划与自适应引擎 | `src/ai_tutoring/{student_tracker,recommend_kp}.py` |
-| 39 | 辅导对话智能体 | `src/ai_tutoring/socratic_tutor.py` |
-| 40 | 家长看板与学情报告 | `src/ai_tutoring/shared_memory.py` |
-| 41 | 集成测试、部署与项目回顾 | 全项目集成 + `tests/` |
+| 17 多代理（§17.5.1 案例对照） | 运行时三代理与 Claude Code 子代理的两层区分 | `src/ai_tutoring/agents.py` |
+| 18 代理协作（§18.6.1 案例对照） | 星型总线：orchestrator 中心化数据流 | `src/ai_tutoring/orchestrator.py` |
+| 19 团队知识库（§19.10.1 案例对照） | 团队开发知识 vs 项目运行时学科知识 | `knowledge_base/math/*.md` |
+| 20 生产级部署（§20.10.1 案例对照） | 开发成本控制 vs 运行时成本控制 | `src/ai_tutoring/cost_tracker.py` |
+
+> 其余模块（question_maker / grader / student_tracker / recommend_kp / socratic_tutor / shared_memory）为项目完整功能的一部分，见 [功能规格.md](docs/功能规格.md)。
 
 ## 快速链接
 
