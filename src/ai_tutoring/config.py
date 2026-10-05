@@ -19,6 +19,7 @@ class Settings:
     api_key: str
     budget_usd: float | None
     app_port: int
+    llm_base_url: str = ""  # 可选；空 = Anthropic 官方，家族 prod 指向 MiniMax 兼容端点
 
 
 def _parse_env_file(path: Path) -> dict[str, str]:
@@ -70,4 +71,5 @@ def load_settings(
         api_key=api_key,
         budget_usd=budget,
         app_port=int(merged.get("APP_PORT", "8804")),
+        llm_base_url=merged.get("LLM_BASE_URL", ""),
     )

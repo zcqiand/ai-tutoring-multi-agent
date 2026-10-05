@@ -19,7 +19,11 @@ def build_llm(settings: Settings):
     if settings.llm_mode == "live":
         import anthropic
 
-        return anthropic.Anthropic(api_key=settings.api_key).messages
+        # base_url 可选：缺省 Anthropic 官方；家族部署指向 MiniMax Anthropic 兼容端点
+        kwargs = {"api_key": settings.api_key}
+        if settings.llm_base_url:
+            kwargs["base_url"] = settings.llm_base_url
+        return anthropic.Anthropic(**kwargs).messages
     return MockLLM()
 
 
