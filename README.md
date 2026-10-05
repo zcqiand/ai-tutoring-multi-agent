@@ -1,19 +1,29 @@
 # AI 学习辅导多智能体系统
 
-三代理协作（planner / tutor / evaluator）的命令行学习辅导系统，配套《Harness 工程：围绕 Claude Code 构建可靠系统》。
+三代理协作（planner / tutor / evaluator）的 AI 学习辅导系统：CLI demo + HTTP API（FastAPI，SSE 流式）+ Web 前端（React 三代理剧场），配套《Harness 工程：围绕 Claude Code 构建可靠系统》。
 
 ## 快速开始
 
 ```bash
 pip install -e .          # 安装依赖（Python 3.10+）
-cp .env.example .env      # 填入 ANTHROPIC_API_KEY
+cp .env.example .env      # 至少填 LLM_MODE（mock | live）；live 需 ANTHROPIC_API_KEY
 ai-tutor-demo "请教我导数"
-pytest -q                 # 全量测试（FakeLLM，无需 API Key）
+pytest -q                 # 全量测试（MockLLM/FakeLLM，无需 API Key）
+```
+
+Web 版（mock 模式离线演示）：
+
+```bash
+LLM_MODE=mock python -m ai_tutoring   # 后端 API，http://127.0.0.1:8804（/docs 看 OpenAPI）
+cd frontend && npm install --registry=https://registry.npmmirror.com
+npm run dev                           # 前端，http://localhost:5804（/api 已代理到 8804）
 ```
 
 ## 功能特性
 
 - **三代理协作**：planner 制定路径、tutor 分步讲解、evaluator 评估效果
+- **HTTP API 层**：FastAPI 直通路由（创建/列表/详情会话 + run SSE 逐事件推送 stage/plan/lesson/evaluation/usage/done），成本全程经 cost_tracker 记账
+- **Web 前端**：三代理剧场（事件驱动线路图 + 讲义卡 + 评估卡 + 成本台账）与学情看板两页，蓝图视觉；mock 模式零 Key 演示
 - **知识库**：数学/物理学科建模，支持扩展
 - **出题与批改**：question_maker 生成选择题，grader 评分并反馈
 - **自适应学习**：student_tracker 追踪掌握度，recommend_kp 推荐下一知识点
@@ -26,6 +36,8 @@ pytest -q                 # 全量测试（FakeLLM，无需 API Key）
 | :--- | :--- |
 | Python | 3.10+ |
 | Claude Agent SDK | 最新稳定版 |
+| FastAPI / Uvicorn | ≥0.115 / ≥0.30（HTTP API 层） |
+| React / Vite / TypeScript | 18.3 / 5.4 / 5.6（frontend/） |
 | 测试框架 | pytest 8.x |
 
 ## 配套书籍及章节映射

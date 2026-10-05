@@ -24,6 +24,13 @@ pip install -e .       # 离线可用
 pytest -q              # 必须全绿，无需 Key/Docker/网络
 ```
 
+Web 层验收（同样离线）：
+
+```bash
+LLM_MODE=mock python -m ai_tutoring   # 后端起 8804，GET /api/health 应得 {"ok":true,"mode":"mock"}
+cd frontend && npm run build          # tsc strict + vite，必须过
+```
+
 ## 编码约定
 
 - **代理职责单一**：planner 不讲课，tutor 不评估，evaluator 不规划。

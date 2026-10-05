@@ -23,6 +23,9 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
+    # HTTP API 层（Web 前端消费面）
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
     # Anthropic SDK 直接调用 Messages API。
     # 不强绑 claude-agent-sdk（它仍在快速迭代），用稳定的 anthropic SDK
     # 让本项目的三代理协作逻辑与 SDK 版本解耦。

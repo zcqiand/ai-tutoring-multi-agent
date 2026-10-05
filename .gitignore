@@ -24,6 +24,7 @@ venv/
 # Build
 dist/
 build/
+node_modules/
 
 # Env
 .env
