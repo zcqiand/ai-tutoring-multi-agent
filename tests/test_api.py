@@ -130,6 +130,9 @@ def test_run_sse_full_sequence(client):
     assert len(body["lessons"]) == 2
     assert body["evaluation"]["understanding_score"] == ev["understanding_score"]
     assert body["cost"]["total_cost_usd"] > 0
+    # 每条记录必须带 cost_usd（asdict 不含 property，曾静默丢键——回归锚）
+    for rec in body["cost"]["records"]:
+        assert rec["cost_usd"] > 0
 
 
 def test_session_list_shows_progress(client):

@@ -8,7 +8,6 @@ run_tutor_step / run_evaluator）——不改 orchestrator.py，逐事件产出�
 from __future__ import annotations
 
 import json
-from dataclasses import asdict
 
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
@@ -76,7 +75,17 @@ def _detail(record: SessionRecord) -> dict:
         "lessons": [_lesson_dict(l) for l in m.lessons],
         "evaluation": _eval_dict(m.evaluation) if m.evaluation else None,
         "cost": {
-            "records": [asdict(r) for r in record.tracker.records],
+            # 显式序列化：cost_usd 是 CallRecord 的 property，asdict 会静默丢键
+            "records": [
+                {
+                    "agent": r.agent,
+                    "model": r.model,
+                    "input_tokens": r.input_tokens,
+                    "output_tokens": r.output_tokens,
+                    "cost_usd": r.cost_usd,
+                }
+                for r in record.tracker.records
+            ],
             "total_cost_usd": record.tracker.total_cost_usd,
             "budget_usd": record.tracker.budget_usd,
         },

@@ -25,10 +25,14 @@ class BudgetExceededError(RuntimeError):
 # 每百万 token 定价（美元）。input 是输入 token，output 是输出 token。
 # 这些数字会随 Anthropic 调价变化——更新时同步改 version-lock 注释。
 PRICING_USD_PER_MTOK: dict[str, tuple[float, float]] = {
-    # (input_per_mtollk, output_per_mtok)
+    # (input_per_mtok, output_per_mtok)
     "claude-sonnet-4-6": (3.00, 15.00),
     "claude-haiku-4-5": (0.80, 4.00),
     "claude-opus-4-7": (15.00, 75.00),
+    # 家族 prod 接线（Anthropic 兼容端点直调 MiniMax）：
+    # https://platform.minimax.io/docs/pricing M3 ≤512k 档 $0.30/$1.20（各源一致性
+    # 最高的读数；官方折扣档位时有变动，以官方页面为准，可单点更新）
+    "MiniMax-M3": (0.30, 1.20),
 }
 
 
